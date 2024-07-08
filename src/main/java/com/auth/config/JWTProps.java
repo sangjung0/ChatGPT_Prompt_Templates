@@ -9,25 +9,27 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import com.auth.Constants;
+
 @Component
 @ConfigurationProperties(prefix="security.jwt")
 @Getter
 @Setter
 @Validated
 public class JWTProps {
-    @Size(min=60, message="Secret Key must be at least 60 characters long")
+    @Size(min = 60, message = Constants.SECRET_KEY_MUST_BE_AT_LEAST_60_CHARACTERS_LONG)
     private String secretKey;
 
-    @Min(value=10, message="Refresh_Token_Expiration_Minute must be at least 10 minuts long")
+    @Min(value = 10, message = Constants.REFRESH_TOKEN_EXPIRATION_MINUTE_MUST_BE_AT_LEAST_10_MINUTES_LONG)
     private long refreshTokenExpirationMinutes;
 
-    @Min(value=10, message="Access_Token_Expiration_Minute must be at least 10 minuts long")
+    @Min(value = 10, message = Constants.ACCESS_TOKEN_EXPIRATION_MINUTE_MUST_BE_AT_LEAST_10_MINUTES_LONG)
     private long accessTokenExpirationMinutes;
 
-    @Min(value=1, message="Auth_Token_Expiration_Minute must be at least 1 minuts long")
+    @Min(value = 1, message = Constants.AUTH_TOKEN_EXPIRATION_MINUTE_MUST_BE_AT_LEAST_1_MINUTES_LONG)
     private long authTokenExpirationMinutes;
 
-    @Min(value=5, message="Register_Token_Expiration_Minute must be at least 5 minuts long")
+    @Min(value = 5, message = Constants.REGISTER_TOKEN_EXPIRATION_MINUTE_MUST_BE_AT_LEAST_5_MINUTES_LONG)
     private long registerTokenExpirationMinutes;
 
     @NotBlank

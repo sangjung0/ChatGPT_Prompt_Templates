@@ -52,20 +52,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error(e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Token expired\"}");
+            response.getWriter().write(
+                    "{\"errors\": [{" +
+                            "\"field\": \"auth-token\"" +
+                            "\"defaultMessage\": \"Time expired\"" +
+                    "}]}"
+            );
             return;
         }catch (JwtException e){
             // 그 외 JWT 오류 시 처리
             log.error(e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Invalid token\"}");
+            response.getWriter().write(
+                    "{\"errors\": [{" +
+                            "\"field\": \"auth-token\"" +
+                            "\"defaultMessage\": \"Invalid token\"" +
+                    "}]}"
+            );
             return;
         }catch (Exception e){
             log.error(e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Internal server error\"}");
+            response.getWriter().write(
+                    "{\"errors\": [{" +
+                            "\"field\": \"auth-token\"" +
+                            "\"defaultMessage\": \"Internal server error\"" +
+                    "}]}"
+            );
             return;
         }
 

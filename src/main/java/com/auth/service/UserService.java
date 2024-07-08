@@ -36,7 +36,7 @@ public class UserService {
 
     public RefreshAccessTokenProvider.TokenInfo logIn(String email, String password) throws LogInException{
         password = this.passwordEncoder.encode(password);
-        log.info("{} {} 로그인 시도",email, password);
+        //log.info("{} {} 로그인 시도",email, password);
 
         Optional<User> found = this.userRepo.findByEmail(email);
         if(found.isEmpty() || !this.passwordEncoder.matches(password, found.get().getPassword())) throw new LogInException("일치하는 회원정보 없음");

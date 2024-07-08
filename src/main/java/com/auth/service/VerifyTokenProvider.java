@@ -27,7 +27,7 @@ public class VerifyTokenProvider extends TokenManager {
 
     public String getPreAuthenticationToken(String authDetails, String verifyNumber){
         Map<String, String> data = new HashMap<String, String>();
-        data.put("vnm", verifyNumber);
+        data.put(Constants.VERIFY_CODE_KEY_NAME, verifyNumber);
         return createToken(
                 Util.getCurrentDatePlusMinutes(this.authTokenExpirationMinutes),
                 authDetails,
