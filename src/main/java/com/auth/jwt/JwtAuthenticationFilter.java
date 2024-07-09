@@ -1,6 +1,5 @@
 package com.auth.jwt;
 
-import com.auth.service.RefreshAccessTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +22,8 @@ import com.auth.service.UserDetailsServiceImpl;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import com.auth.service.RefreshAccessTokenProvider;
 
 @Component
 @RequiredArgsConstructor
@@ -54,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.getWriter().write(
                     "{\"errors\": [{" +
-                            "\"field\": \"auth-token\"" +
+                            "\"field\": \"auth-token\"," +
                             "\"defaultMessage\": \"Time expired\"" +
                     "}]}"
             );
@@ -66,8 +68,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.getWriter().write(
                     "{\"errors\": [{" +
-                            "\"field\": \"auth-token\"" +
+                            "\"field\": \"auth-token\"," +
                             "\"defaultMessage\": \"Invalid token\"" +
+                    "}]}"
+            );
+            return;
+        }catch (UsernameNotFoundException e){
+            // 유저 정보 없을 때
+            log.error(e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write(
+                    "{\"errors\": [{" +
+                            "\"field\": \"auth-token\"," +
+                            "\"defaultMessage\": \"User not found\"" +
                     "}]}"
             );
             return;
@@ -77,7 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.getWriter().write(
                     "{\"errors\": [{" +
-                            "\"field\": \"auth-token\"" +
+                            "\"field\": \"auth-token\"," +
                             "\"defaultMessage\": \"Internal server error\"" +
                     "}]}"
             );
