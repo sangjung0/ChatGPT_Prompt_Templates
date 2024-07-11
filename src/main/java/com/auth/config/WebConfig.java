@@ -10,6 +10,8 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import java.io.IOException;
 
+import com.auth.Constants;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -19,7 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addMapping("/api/auth/**")
                 .allowedOrigins("*")
                 .allowedMethods("POST");
-
         registry
                 .addMapping("/api/verify/**")
                 .allowedOrigins("*")
@@ -32,6 +33,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addMapping("/index.html")
                 .allowedOrigins("*")
                 .allowedMethods("GET");
+        registry
+                .addMapping("/**")
+                .exposedHeaders(Constants.ACCESS_TOKEN);
     }
 
     @Override
