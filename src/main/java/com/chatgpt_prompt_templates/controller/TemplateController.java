@@ -1,6 +1,8 @@
 package com.chatgpt_prompt_templates.controller;
 
 import com.chatgpt_prompt_templates.dto.NameDto;
+import com.chatgpt_prompt_templates.dto.TemplateDto;
+import com.chatgpt_prompt_templates.exception.CheckError;
 import com.chatgpt_prompt_templates.exception.ValidException;
 import com.chatgpt_prompt_templates.exception.VerifyException;
 import jakarta.validation.Valid;
@@ -35,8 +37,8 @@ public class TemplateController {
 
     @PostMapping("/get")
     public ResponseEntity<?> get(@RequestBody @Valid NameDto dt, BindingResult bindingResult){
-        return Controller.run(()->{
-           return new ResponseEntity<String>(this.templateService.getTemplate(dt.getName()), HttpStatus.OK);
+        return BindingController.run(bindingResult, ()->{
+           return new ResponseEntity<List<TemplateDto>>(this.templateService.getTemplate(dt.getName()), HttpStatus.OK);
         });
     }
 
@@ -51,6 +53,19 @@ public class TemplateController {
             }catch(VerifyException e){
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
             }catch(ValidException e){
+                return new ResponseEntity<Map<String, String>>(e.getErrors(), HttpStatus.BAD_REQUEST);
+            }catch(Exception e){
+                return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
+    private static class BindingController {
+        public static ResponseEntity<?> run(BindingResult bindingResult, ControllerInterface base){
+            try{
+                CheckError.checkValidException(bindingResult);
+                return base.run();
+            }catch(com.auth.exception.ValidException e){
                 return new ResponseEntity<Map<String, String>>(e.getErrors(), HttpStatus.BAD_REQUEST);
             }catch(Exception e){
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);

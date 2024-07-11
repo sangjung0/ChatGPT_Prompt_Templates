@@ -16,7 +16,7 @@ public class Template {
     }
 
     @Id
-    @Column(nullable = false, unique = true, length=24)
+    @Column(nullable = false, unique = true, length=255)
     private String name;
 
     @Column(nullable = false, length = 1023)

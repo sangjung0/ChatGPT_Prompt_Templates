@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class NameDto {
 
     @NotBlank(message= Constants.TEMPLATE_NAME_REQUIRED)
-    @Size(min=1, max=24, message = Constants.TEMPLATE_NAME_VALID_LENGTH)
+    @Size(min=1, max=255, message = Constants.TEMPLATE_NAME_VALID_LENGTH)
     private String name;
 }
