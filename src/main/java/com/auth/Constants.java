@@ -2,8 +2,8 @@ package com.auth;
 
 public class Constants {
     /* KeyWord */
-    public static final String REFRESH_TOKEN = "refreshToken";
-    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String REFRESH_TOKEN = "refresh-token";
+    public static final String ACCESS_TOKEN = "access-token";
     public static final String VERIFY_CODE_KEY_NAME = "vnm";
     public static final String TOKEN_TYPE="typ";
 
